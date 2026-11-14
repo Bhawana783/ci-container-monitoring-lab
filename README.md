@@ -101,3 +101,20 @@ commit and redeploy, or rebuild from a previous tag:
 git revert <commit>          # revert a bad release
 docker compose up -d --build # redeploy the reverted version
 ```
+
+## Cloud Mapping (documentation only)
+
+The same commit-to-monitored-service flow runs in the cloud with managed services.
+Nothing is deployed here and no billing is touched — this is a written mapping of
+where each local step lands in production.
+
+| Local step | Cloud equivalent (Google Cloud) |
+|------------|---------------------------------|
+| Build & test | **Artifact Registry** — store the built container image |
+| Deploy & run | **Cloud Run** — fully managed, scalable container service |
+| Observe | **Cloud Monitoring** — dashboards, alerts, and metrics |
+| Rollback | Cloud Run revision rollback to the previous container image |
+
+The chain is identical: commit → CI → image → deploy → dashboard. What changes is
+that the managed services handle provisioning, scaling, and availability so you
+don't run Docker or Grafana by hand.
